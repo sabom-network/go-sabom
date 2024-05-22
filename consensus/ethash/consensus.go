@@ -78,6 +78,8 @@ var (
 	// parent block's time and difficulty. The calculation uses the Byzantium rules.
 	// Specification EIP-649: https://eips.ethereum.org/EIPS/eip-649
 	calcDifficultyByzantium = makeDifficultyCalculator(big.NewInt(3000000))
+
+	calcDifficultySabom = makeDifficultyCalculator(big.NewInt(15_000_000))
 )
 
 // Various error messages to mark blocks invalid. These should be private to
@@ -354,6 +356,8 @@ func CalcDifficulty(config *params.ChainConfig, time uint64, parent *types.Heade
 		return calcDifficultyByzantium(time, parent)
 	case config.IsHomestead(next):
 		return calcDifficultyHomestead(time, parent)
+	case config.IsSabom(next):
+		return calcDifficultySabom(time, parent)
 	default:
 		return calcDifficultyFrontier(time, parent)
 	}
